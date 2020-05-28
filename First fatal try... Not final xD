@@ -1,0 +1,65 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
+/* 
+Most frequent bytes in file
+*/
+
+public class Solution {
+    public static void main(String[] args) throws Exception {    
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String fileName = reader.readLine();
+        
+        FileInputStream inputStream = new FileInputStream(fileName);
+        
+        int[][] array = new int[2][256];
+        ArrayList<Integer> secArray = new ArrayList<Integer>(); 
+        
+        
+        while(inputStream.available() > 0) {
+            int a = inputStream.read();
+            
+            for(int i = 0; i < 256; i++) {
+                if(array[0][i] != 0) {
+                    if(array[0][i] == a) {
+                        array[1][i] += 1;
+                    }
+                }
+                else {
+                    array[0][i] = a;
+                }
+            }
+        }  
+        
+        int b = array[1][0];
+        int c = 0;
+        int d = 0;
+        
+        for(int k = 0; k < 256; k++) {
+            c = array[1][k];
+            
+            if(b < c) {
+                b = c;
+                d = k;
+            }
+        }
+        
+        secArray.add(array[1][d]);
+        
+        for(int o = 0; o < 256; o++) {
+            if(array[1][o] == array[1][d] && o != d) {
+                secArray.add(array[1][o]);
+            }
+        }
+        
+        int y = 0;
+        for(int l = 0; l < secArray.size(); l++) {
+            y = secArray.get(l);
+            System.out.print(array[0][y] + " ");
+        }
+        
+        inputStream.close();
+    }
+}
